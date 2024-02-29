@@ -81,7 +81,7 @@ commands:
       commandLine: 'source $HOME/.bashrc && molecule destroy'
       workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
       group:
-        kind: run
+        kind: build
         isDefault: true
       component: tooling-container
   
