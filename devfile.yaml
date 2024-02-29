@@ -17,6 +17,7 @@ commands:
 
   - id: oc-install
     exec:
+      label: "1.OC: install the OpenShift CLI"
       commandLine: '/usr/local/bin/ansible-playbook ${PROJECT_SOURCE}/playbooks/install_oc.yml'
       workingDir: ${PROJECT_SOURCE}
       group:
@@ -24,30 +25,20 @@ commands:
         isDefault: true
       component: tooling-container
 
+  - id: oc-pods
+    exec:
+      label: "2.OC: list the running pods"
+      commandLine: 'oc get pods'
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+        isDefault: true
+      component: tooling-container
+      
   - id: molecule-create
     exec:
-      label: "1.Molecule: start a test pod for the automation"
+      label: "1.Molecule: start a test pod for automation development"
       commandLine: 'source $HOME/.bashrc && molecule create'
-      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
-      group:
-        kind: run
-        isDefault: true
-      component: tooling-container
-
-  - id: molecule-list
-    exec:
-      label: "2.Molecule: view the test instance that was created"
-      commandLine: 'source $HOME/.bashrc && molecule list'
-      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
-      group:
-        kind: run
-        isDefault: true
-      component: tooling-container
-
-  - id: molecule-verify
-    exec:
-      label: "3.Molecule: run the verification against the test pod"
-      commandLine: 'source $HOME/.bashrc && molecule verify'
       workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
       group:
         kind: run
@@ -56,14 +47,34 @@ commands:
 
   - id: molecule-converge
     exec:
-      label: "4.Molecule: apply the role to the pod"
+      label: "2.Molecule: converge the role to the pod and run it"
       commandLine: 'source $HOME/.bashrc && molecule converge'
       workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
       group:
         kind: run
         isDefault: true
       component: tooling-container
-
+      
+   - id: molecule-login
+    exec:
+      label: "3.Molecule: login to the pod for role debugging"
+      commandLine: 'source $HOME/.bashrc && molecule login'
+      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
+      group:
+        kind: run
+        isDefault: true
+      component: tooling-container
+  
+  - id: molecule-test
+    exec:
+      label: "4.Molecule: run the full molecule test"
+      commandLine: 'source $HOME/.bashrc && molecule test'
+      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
+      group:
+        kind: run
+        isDefault: true
+      component: tooling-container
+  
   - id: molecule-destroy
     exec:
       label: "5.Molecule: reset the test pod back to a fresh instance"
@@ -73,11 +84,11 @@ commands:
         kind: run
         isDefault: true
       component: tooling-container
-
-  - id: molecule-test
+  
+  - id: molecule-list
     exec:
-      label: "6.Molecule: run the full molecule test"
-      commandLine: 'source $HOME/.bashrc && molecule test'
+      label: "6.Molecule: list status of the molecule instances"
+      commandLine: 'source $HOME/.bashrc && molecule list'
       workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
       group:
         kind: run
@@ -98,3 +109,4 @@ commands:
 events:
   postStart:
     - "oc-install"
+    - "molecule-destroy"
