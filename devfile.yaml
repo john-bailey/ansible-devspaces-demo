@@ -111,3 +111,5 @@ events:
   postStart:
     - "oc-install"
     - "molecule-destroy"
+  preStop:
+    - "molecule-destroy"
