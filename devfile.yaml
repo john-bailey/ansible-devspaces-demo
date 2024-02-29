@@ -55,7 +55,7 @@ commands:
         isDefault: true
       component: tooling-container
       
-   - id: molecule-login
+  - id: molecule-login
     exec:
       label: "3.Molecule: login to the pod for role debugging"
       commandLine: 'source $HOME/.bashrc && molecule login'
@@ -109,3 +109,4 @@ commands:
 events:
   postStart:
     - "oc-install"
+    - "molecule-destroy"
