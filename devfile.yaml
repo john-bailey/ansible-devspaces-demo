@@ -31,7 +31,7 @@ commands:
       commandLine: 'oc get pods'
       workingDir: ${PROJECT_SOURCE}
       group:
-        kind: build
+        kind: run
         isDefault: true
       component: tooling-container
       
