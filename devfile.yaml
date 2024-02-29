@@ -15,86 +15,6 @@ components:
           value: '~/.ansible/collections:/usr/share/ansible/collections:/projects/ansible-devspaces-demo/collections'
 commands:
 
-  - id: oc-install
-    exec:
-      label: "Install the OpenShift CLI"
-      commandLine: '/usr/local/bin/ansible-playbook ${PROJECT_SOURCE}/playbooks/install_oc.yml'
-      workingDir: ${PROJECT_SOURCE}
-      group:
-        kind: build
-        isDefault: true
-      component: tooling-container
-
-  - id: oc-pods
-    exec:
-      label: "List the running pods"
-      commandLine: '/home/runner/bin/oc get pods'
-      workingDir: ${PROJECT_SOURCE}
-      group:
-        kind: run
-        isDefault: true
-      component: tooling-container
-      
-  - id: molecule-create
-    exec:
-      label: "Molecule: Start a test container"
-      commandLine: 'source $HOME/.bashrc && molecule create'
-      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
-      group:
-        kind: run
-        isDefault: true
-      component: tooling-container
-
-  - id: molecule-converge
-    exec:
-      label: "Molecule: Converge and run the role"
-      commandLine: 'source $HOME/.bashrc && molecule converge'
-      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
-      group:
-        kind: run
-        isDefault: true
-      component: tooling-container
-      
-  - id: molecule-login
-    exec:
-      label: "Molecule: Login to the test container"
-      commandLine: 'source $HOME/.bashrc && molecule login'
-      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
-      group:
-        kind: run
-        isDefault: true
-      component: tooling-container
-  
-  - id: molecule-test
-    exec:
-      label: "Molecule: Full molecule test"
-      commandLine: 'source $HOME/.bashrc && molecule test'
-      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
-      group:
-        kind: run
-        isDefault: true
-      component: tooling-container
-  
-  - id: molecule-destroy
-    exec:
-      label: "Molecule: Reset the test container"
-      commandLine: 'source $HOME/.bashrc && molecule destroy'
-      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
-      group:
-        kind: run
-        isDefault: true
-      component: tooling-container
-  
-  - id: molecule-list
-    exec:
-      label: "Molecule: List status of the molecule instances"
-      commandLine: 'source $HOME/.bashrc && molecule list'
-      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
-      group:
-        kind: run
-        isDefault: true
-      component: tooling-container
-
   - id: ansible-navigator
     exec:
       label: "Ansible-Navigator: Start ansible-navigator"
@@ -106,6 +26,87 @@ commands:
         ansible-navigator --ee false
       workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo
       component: tooling-container
+
+  - id: oc-pods
+    exec:
+      label: "I: List running pods"
+      commandLine: '/home/runner/bin/oc get pods'
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: run
+        isDefault: true
+      component: tooling-container
+
+  - id: molecule-list
+    exec:
+      label: "I: List status of molecule instances"
+      commandLine: 'source $HOME/.bashrc && molecule list'
+      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
+      group:
+        kind: run
+        isDefault: true
+      component: tooling-container
+      
+  - id: molecule-create
+    exec:
+      label: "M: 1 - Start a test container"
+      commandLine: 'source $HOME/.bashrc && molecule create'
+      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
+      group:
+        kind: run
+        isDefault: true
+      component: tooling-container
+
+  - id: molecule-converge
+    exec:
+      label: "M: 2 - Converge and run the role"
+      commandLine: 'source $HOME/.bashrc && molecule converge'
+      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
+      group:
+        kind: run
+        isDefault: true
+      component: tooling-container
+      
+  - id: molecule-login
+    exec:
+      label: "M: 3 - Login to the test container"
+      commandLine: 'source $HOME/.bashrc && molecule login'
+      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
+      group:
+        kind: run
+        isDefault: true
+      component: tooling-container
+  
+  - id: molecule-test
+    exec:
+      label: "M: 4 - Full molecule test"
+      commandLine: 'source $HOME/.bashrc && molecule test'
+      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
+      group:
+        kind: run
+        isDefault: true
+      component: tooling-container
+  
+  - id: molecule-destroy
+    exec:
+      label: "M: 5 - Destroy the test container"
+      commandLine: 'source $HOME/.bashrc && molecule destroy'
+      workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo/collections/ansible_collections/sample_namespace/sample_collection/extensions
+      group:
+        kind: run
+        isDefault: true
+      component: tooling-container
+      
+  - id: oc-install
+    exec:
+      label: "Z: Install the OpenShift CLI"
+      commandLine: '/usr/local/bin/ansible-playbook ${PROJECT_SOURCE}/playbooks/install_oc.yml'
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+        isDefault: true
+      component: tooling-container
+
 events:
   postStart:
     - "oc-install"
