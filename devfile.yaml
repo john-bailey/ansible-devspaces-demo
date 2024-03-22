@@ -96,7 +96,7 @@ commands:
         kind: run
         isDefault: true
       component: tooling-container
-      
+
   - id: oc-install
     exec:
       label: "Z: Install the OpenShift CLI"
@@ -107,9 +107,20 @@ commands:
         isDefault: true
       component: tooling-container
 
+  - id: pip-install
+    exec:
+      label: "Z: Install the PIP Requirements"
+      commandLine: '/usr/local/bin/pip install -r requirements.txt'
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+        isDefault: true
+      component: tooling-container
+
 events:
   postStart:
     - "oc-install"
+    - "pip-install"
     - "molecule-destroy"
   preStop:
     - "molecule-destroy"
