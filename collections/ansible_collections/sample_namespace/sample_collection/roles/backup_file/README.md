@@ -12,13 +12,12 @@ Requirements
 - community.okd or redhat.openshift collection
 - Required collections are included in the requirements.yml file that can be installed with `ansible-galaxy install -r requirements.yml` command
 
-
 Manually installing dependencies (rather than using `molecule prepare`)
 -------------
 
 Download the 'oc' binary from the downloads route local to the cluster and add to path
 
-```
+``` shell
 mkdir $HOME/bin
 curl -o $HOME/bin/oc http://downloads.openshift-console.svc.cluster.local/amd64/linux/oc
 chmod u+x $HOME/bin/oc
@@ -27,14 +26,14 @@ export PATH=$PATH:$HOME/bin
 
 OpenShift Token is automatically injected. You can verify this by running the following commands:
 
-```
+``` shell
 oc whoami
 oc get pods
 ```
 
 Install the required collections:
 
-```
+``` shell
 ansible-galaxy collection install -r demo/backup_file/requirements.yml
 ```
 
@@ -68,14 +67,16 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-  - name: Simple test case
-    hosts: all
-    connection: community.okd.oc
-    vars:
-      backup_file_source: '/etc/resolv.conf'
-      backup_file_dest_folder: '/tmp/backups'
-    roles:
-      - backup_file
+``` yaml
+- name: Simple test case
+  hosts: all
+  connection: community.okd.oc
+  vars:
+    backup_file_source: '/etc/resolv.conf'
+    backup_file_dest_folder: '/tmp/backups'
+  roles:
+    - backup_file
+```
 
 License
 -------
